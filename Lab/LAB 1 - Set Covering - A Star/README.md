@@ -1,0 +1,1 @@
+There are two heuristic functions in my solutions, the first one was my initial implementation, which in the end was non admissible, so I changed it with the second implementation, taken from prof.Squillero's solution
