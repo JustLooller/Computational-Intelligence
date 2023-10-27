@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "computational-intelligence"
+version = "0.1.0"
+description = ""
+authors = ["JustLooller <simonegiambrone2001.2@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12, <3.13"
+numpy = "^1.26.1"
+scipy = "^1.11.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
