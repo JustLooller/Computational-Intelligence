@@ -16,3 +16,7 @@ The lab request is to build and evolutionary strategy to play the Nim game.
 ## Collaborations
 
 I took inspiration from the solution implemented by [Davide Vitabile](https://github.com/Vitabile/Computational-Intelligence/tree/main/lab2) for the development of the Evolutionary Agent. The kind of strategy I implemented is a $(1,\lambda)-ES$
+
+## Peer Reviews
+[Alessio Cappello](https://github.com/AlessioCappello2/computational-intelligence/issues/3)
+[Luca Barbato](https://github.com/lucabubi/Computational-Intelligence/issues/2)
