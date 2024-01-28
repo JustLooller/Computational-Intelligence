@@ -88,76 +88,28 @@ class Game(object):
         '''Play the game. Returns the winning player'''
         players = [player1, player2]
         winner = -1
-        # add a counter to terminate the game if it is stuck
-        count = 0
-        while winner < 0 and count < 33:
+        while winner < 0:
             self.current_player_idx += 1
             self.current_player_idx %= len(players)
             ok = False
             while not ok:
                 from_pos, slide = players[self.current_player_idx].make_move(
                     self)
-                ok = self.move(from_pos, slide, self.current_player_idx)
+                ok = self.__move(from_pos, slide, self.current_player_idx)
             winner = self.check_winner()
-            count += 1
         return winner
 
-    def possible_moves(self, player_id: int) -> list[tuple[tuple[int, int], Move]]:
-        '''Get all possible moves'''
-        possible_moves: list[tuple[tuple[int, int], Move]] = []
-        CORNERS = [(0, 0), (0, 4), (4, 0), (4, 4)]
-        ALL_MOVES = [Move.TOP, Move.BOTTOM, Move.LEFT, Move.RIGHT]
-        
-        for i in range(len(CORNERS)):
-            if i == 0:
-                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-                    possible_moves.append((CORNERS[i], Move.RIGHT))
-                    possible_moves.append((CORNERS[i], Move.BOTTOM))
-            if i == 1:
-                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-                    possible_moves.append((CORNERS[i], Move.LEFT))
-                    possible_moves.append((CORNERS[i], Move.BOTTOM))
-            if i == 2:
-                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-                    possible_moves.append((CORNERS[i], Move.RIGHT))
-                    possible_moves.append((CORNERS[i], Move.TOP))
-            if i == 3:
-                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-                    possible_moves.append((CORNERS[i], Move.LEFT))
-                    possible_moves.append((CORNERS[i], Move.TOP))
-
-        for i in range(self._board.shape[0]):
-            if self._board[i, 0] == -1 or self._board[i, 0] == player_id:
-                possible_moves.append(((i, 0), Move.RIGHT))
-            if self._board[i, 4] == -1 or self._board[i, 4] == player_id:
-                possible_moves.append(((i, 4), Move.LEFT))
-        for i in range(self._board.shape[1]):
-            if self._board[0, i] == -1 or self._board[0, i] == player_id:
-                possible_moves.append(((0, i), Move.BOTTOM))
-            if self._board[4, i] == -1 or self._board[4, i] == player_id:
-                possible_moves.append(((4, i), Move.TOP))
-
-        for i in range(1, self._board.shape[0] - 1):
-            for j in range(1, self._board.shape[1] - 1):
-                if self._board[i, j] == -1 or self._board[i, j] == player_id:
-                    possible_moves.append(((i, j), Move.TOP))
-                    possible_moves.append(((i, j), Move.BOTTOM))
-                    possible_moves.append(((i, j), Move.LEFT))
-                    possible_moves.append(((i, j), Move.RIGHT))
-
-        return possible_moves
-
-    def move(self, from_pos: tuple[int, int], slide: Move, player_id: int) -> bool:
+    def __move(self, from_pos: tuple[int, int], slide: Move, player_id: int) -> bool:
         '''Perform a move'''
         if player_id > 2:
             return False
         # Oh God, Numpy arrays
-        prev_value = deepcopy(self._board[(from_pos[0], from_pos[1])])
-        acceptable = self.__take((from_pos[0], from_pos[1]), player_id)
+        prev_value = deepcopy(self._board[(from_pos[1], from_pos[0])])
+        acceptable = self.__take((from_pos[1], from_pos[0]), player_id)
         if acceptable:
-            acceptable = self.__slide((from_pos[0], from_pos[1]), slide)
+            acceptable = self.__slide((from_pos[1], from_pos[0]), slide)
             if not acceptable:
-                self._board[(from_pos[0], from_pos[1])] = deepcopy(prev_value)
+                self._board[(from_pos[1], from_pos[0])] = deepcopy(prev_value)
         return acceptable
 
     def __take(self, from_pos: tuple[int, int], player_id: int) -> bool:
