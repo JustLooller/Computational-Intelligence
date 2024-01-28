@@ -102,81 +102,50 @@ class Game(object):
             count += 1
         return winner
 
-    # def possible_moves(self, player_id: int) -> list[tuple[tuple[int, int], Move]]:
-    #     '''Get all possible moves'''
-    #     possible_moves: list[tuple[tuple[int, int], Move]] = []
-    #     CORNERS = [(0, 0), (0, 4), (4, 0), (4, 4)]
-    #     ALL_MOVES = [Move.TOP, Move.BOTTOM, Move.LEFT, Move.RIGHT]
-        
-    #     for i in range(len(CORNERS)):
-    #         if i == 0:
-    #             if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-    #                 possible_moves.append((CORNERS[i], Move.RIGHT))
-    #                 possible_moves.append((CORNERS[i], Move.BOTTOM))
-    #         if i == 1:
-    #             if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-    #                 possible_moves.append((CORNERS[i], Move.LEFT))
-    #                 possible_moves.append((CORNERS[i], Move.BOTTOM))
-    #         if i == 2:
-    #             if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-    #                 possible_moves.append((CORNERS[i], Move.RIGHT))
-    #                 possible_moves.append((CORNERS[i], Move.TOP))
-    #         if i == 3:
-    #             if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
-    #                 possible_moves.append((CORNERS[i], Move.LEFT))
-    #                 possible_moves.append((CORNERS[i], Move.TOP))
-
-    #     for i in range(self._board.shape[0]):
-    #         if self._board[i, 0] == -1 or self._board[i, 0] == player_id:
-    #             possible_moves.append(((i, 0), Move.RIGHT))
-    #         if self._board[i, 4] == -1 or self._board[i, 4] == player_id:
-    #             possible_moves.append(((i, 4), Move.LEFT))
-    #     for i in range(self._board.shape[1]):
-    #         if self._board[0, i] == -1 or self._board[0, i] == player_id:
-    #             possible_moves.append(((0, i), Move.BOTTOM))
-    #         if self._board[4, i] == -1 or self._board[4, i] == player_id:
-    #             possible_moves.append(((4, i), Move.TOP))
-
-    #     for i in range(1, self._board.shape[0] - 1):
-    #         for j in range(1, self._board.shape[1] - 1):
-    #             if self._board[i, j] == -1 or self._board[i, j] == player_id:
-    #                 possible_moves.append(((i, j), Move.TOP))
-    #                 possible_moves.append(((i, j), Move.BOTTOM))
-    #                 possible_moves.append(((i, j), Move.LEFT))
-    #                 possible_moves.append(((i, j), Move.RIGHT))
-
-    #     return possible_moves
     def possible_moves(self, player_id: int) -> list[tuple[tuple[int, int], Move]]:
-        moves = []
-        CORNER = [(0,0), (0,4), (4,4), (4,0)]
-        STEP = [1, 1, -1, -1]
-        MOVES = [Move.TOP, Move.RIGHT, Move.BOTTOM, Move.LEFT]
-        for i in range(len(CORNER)):
-            match i:
-                case 0:
-                    if self._board[CORNER[i]] == -1 or self._board[CORNER[i]] == player_id:
-                        moves.append((CORNER[i], Move.RIGHT))
-                        moves.append((CORNER[i], Move.BOTTOM))
-                case 1:
-                    if self._board[CORNER[i]] == -1 or self._board[CORNER[i]] == player_id:
-                        moves.append((CORNER[i], Move.LEFT))
-                        moves.append((CORNER[i], Move.BOTTOM))
-                case 2:
-                    if self._board[CORNER[i]] == -1 or self._board[CORNER[i]] == player_id:
-                        moves.append((CORNER[i], Move.LEFT))
-                        moves.append((CORNER[i], Move.TOP))
-                case 3:
-                    if self._board[CORNER[i]] == -1 or self._board[CORNER[i]] == player_id:
-                        moves.append((CORNER[i], Move.RIGHT))
-                        moves.append((CORNER[i], Move.TOP))
-                
-            for x in range(CORNER[i][0], CORNER[(i+1)%4][0]+STEP[i], STEP[i]):
-                for y in range(CORNER[i][1], CORNER[(i+1)%4][1]+STEP[i], STEP[i]):
-                    if (x,y) not in CORNER and (self._board[x,y] == -1 or self._board[x,y] == player_id):
-                        for j in range(len(MOVES)):
-                            if j!= i:
-                                moves.append(((x,y), MOVES[j]))
-        return moves
+        '''Get all possible moves'''
+        possible_moves: list[tuple[tuple[int, int], Move]] = []
+        CORNERS = [(0, 0), (0, 4), (4, 0), (4, 4)]
+        ALL_MOVES = [Move.TOP, Move.BOTTOM, Move.LEFT, Move.RIGHT]
+        
+        for i in range(len(CORNERS)):
+            if i == 0:
+                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
+                    possible_moves.append((CORNERS[i], Move.RIGHT))
+                    possible_moves.append((CORNERS[i], Move.BOTTOM))
+            if i == 1:
+                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
+                    possible_moves.append((CORNERS[i], Move.LEFT))
+                    possible_moves.append((CORNERS[i], Move.BOTTOM))
+            if i == 2:
+                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
+                    possible_moves.append((CORNERS[i], Move.RIGHT))
+                    possible_moves.append((CORNERS[i], Move.TOP))
+            if i == 3:
+                if self._board[CORNERS[i]] == -1 or self._board[CORNERS[i]] == player_id:
+                    possible_moves.append((CORNERS[i], Move.LEFT))
+                    possible_moves.append((CORNERS[i], Move.TOP))
+
+        for i in range(self._board.shape[0]):
+            if self._board[i, 0] == -1 or self._board[i, 0] == player_id:
+                possible_moves.append(((i, 0), Move.RIGHT))
+            if self._board[i, 4] == -1 or self._board[i, 4] == player_id:
+                possible_moves.append(((i, 4), Move.LEFT))
+        for i in range(self._board.shape[1]):
+            if self._board[0, i] == -1 or self._board[0, i] == player_id:
+                possible_moves.append(((0, i), Move.BOTTOM))
+            if self._board[4, i] == -1 or self._board[4, i] == player_id:
+                possible_moves.append(((4, i), Move.TOP))
+
+        for i in range(1, self._board.shape[0] - 1):
+            for j in range(1, self._board.shape[1] - 1):
+                if self._board[i, j] == -1 or self._board[i, j] == player_id:
+                    possible_moves.append(((i, j), Move.TOP))
+                    possible_moves.append(((i, j), Move.BOTTOM))
+                    possible_moves.append(((i, j), Move.LEFT))
+                    possible_moves.append(((i, j), Move.RIGHT))
+
+        return possible_moves
 
     def move(self, from_pos: tuple[int, int], slide: Move, player_id: int) -> bool:
         '''Perform a move'''
