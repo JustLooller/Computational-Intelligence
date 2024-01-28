@@ -18,27 +18,21 @@ class RandomPlayer(Player):
 if __name__ == '__main__':
 
     wins = 0
-    draws = 0
     for _ in tqdm(range(10), desc="MinMax vs Random", unit="game"):
-        g = MyGame()
+        g = Game()
         player1 = MinMax(0, 2)
         player2 = RandomPlayer()
-        winner, count = g.play(player1, player2)
-        if count == 100: draws += 1
+        winner= g.play(player1, player2)
         if winner == 0: wins += 1
     print(f"MinMax player with depth 2 as first player wins: {wins}")
-    print(f"Draws: {draws}")
-    print(f"Random player as second player wins: {10 - wins - draws}")
+    print(f"Random player as second player wins: {10 - wins}")
 
     wins = 0
-    draws = 0
     for _ in tqdm(range(10), desc="Random vs MinMax", unit="game"):
         g = MyGame()
         player1 = RandomPlayer()
         player2 = MinMax(1, 2)
-        winner, count = g.play(player1, player2)
-        if count == 100: draws += 1
+        winner= g.play(player1, player2)
         if winner == 1: wins += 1
     print(f"MinMax player with depth 2 as second player wins: {wins}")
-    print(f"Random player as first player wins: {10 - wins - draws}")
-    print(f"Draws: {draws}")
+    print(f"Random player as first player wins: {10 - wins}")

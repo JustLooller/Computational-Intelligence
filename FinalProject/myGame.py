@@ -7,26 +7,6 @@ class MyGame(Game):
     def __init__(self) -> None:
       super().__init__()
     
-    def count_near_wins(self, player_id: int) -> int:
-      near_wins = 0
-
-      # Check rows and columns
-      for i in range(self._board.shape[0]):
-          if np.count_nonzero(self._board[i, :] == player_id) == self._board.shape[0] - 1 and np.count_nonzero(self._board[i, :] == -1) == 1:
-              near_wins += 1
-          if np.count_nonzero(self._board[:, i] == player_id) == self._board.shape[1] - 1 and np.count_nonzero(self._board[:, i] == -1) == 1:
-              near_wins += 1
-
-      # Check principal diagonal
-      if np.count_nonzero(self._board.diagonal() == player_id) == self._board.shape[0] - 1 and np.count_nonzero(self._board.diagonal() == -1) == 1:
-          near_wins += 1
-
-      # Check secondary diagonal
-      if np.count_nonzero(np.fliplr(self._board).diagonal() == player_id) == self._board.shape[0] - 1 and np.count_nonzero(np.fliplr(self._board).diagonal() == -1) == 1:
-          near_wins += 1
-
-      return near_wins
-
     def move(self, from_pos: tuple[int, int], slide: Move, player_id: int) -> bool:
       '''Perform a move'''
       if player_id > 2:
@@ -85,21 +65,29 @@ class MyGame(Game):
 
       return possible_moves
 
-    def play(self, player1: Player, player2: Player) -> int:
-        '''Play the game. Returns the winning player'''
-        players = [player1, player2]
-        winner = -1
-        # add a counter to terminate the game if it is stuck
-        count = 0
-        while winner < 0 and count < 100:
-            self.current_player_idx += 1
-            self.current_player_idx %= len(players)
-            ok = False
-            while not ok:
-                from_pos, slide = players[self.current_player_idx].make_move(
-                    self)
-                ok = self.move(from_pos, slide, self.current_player_idx)
-            winner = self.check_winner()
-            count += 1
-        print(self._board)
-        return winner, count
+    # def play(self, player1: Player, player2: Player) -> int:
+    #     '''Play the game. Returns the winning player'''
+    #     players = [player1, player2]
+    #     winner = -1
+    #     # add a counter to terminate the game if it is stuck
+    #     count = 0
+    #     while winner < 0 and count < 100:
+    #         self.current_player_idx += 1
+    #         self.current_player_idx %= len(players)
+    #         ok = False
+    #         while not ok:
+    #             from_pos, slide = players[self.current_player_idx].make_move(
+    #                 self)
+    #             ok = self.move(from_pos, slide, self.current_player_idx)
+    #         winner = self.check_winner()
+    #         count += 1
+    #     print(self._board)
+    #     return winner, count
+
+    @staticmethod
+    def from_game(game: Game) -> 'MyGame':
+        '''Create a new game from an existing game'''
+        new_game = MyGame()
+        new_game._board = deepcopy(game.get_board())
+        new_game.current_player_idx = game.get_current_player()
+        return new_game

@@ -1,4 +1,5 @@
 from game import Game, Player, Move
+from myGame import MyGame
 from copy import deepcopy
 from math import inf
 from typing import Tuple
@@ -12,7 +13,7 @@ class MinMax(Player):
     self.opponent_id = 1 if player_id == 0 else 0
     self.depth = depth
 
-  def evaluate(self, game: 'MyGame'):
+  def evaluate(self, game: 'Game'):
     winner = game.check_winner()
     if winner == self.player_id:
       return 1
@@ -30,7 +31,6 @@ class MinMax(Player):
       return self.evaluate(game)
 
     if maximizing_player:
-      assert game.get_current_player() == self.player_id
       max_eval = -inf
       possible_moves = game.possible_moves(self.player_id)
 
@@ -45,7 +45,6 @@ class MinMax(Player):
           break
       return max_eval
     else:
-      assert game.get_current_player() == self.opponent_id
       min_eval = inf
       possible_moves = game.possible_moves(self.player_id)
 
@@ -61,8 +60,10 @@ class MinMax(Player):
       return min_eval   
 
 
-  def make_move(self, game: 'MyGame') -> Tuple[Tuple[int, int], Move]:
-    assert game.get_current_player() == self.player_id
+  def make_move(self, game: 'Game') -> Tuple[Tuple[int, int], Move]:
+
+    game = MyGame.from_game(game)
+
     best_score = -inf
     best_move = None
     possible_moves = game.possible_moves(self.player_id)
@@ -78,4 +79,5 @@ class MinMax(Player):
         best_move = m
 
     from_pos, move = best_move
+    from_pos = from_pos[::-1]
     return from_pos, move
