@@ -65,24 +65,13 @@ class MyGame(Game):
 
       return possible_moves
 
-    # def play(self, player1: Player, player2: Player) -> int:
-    #     '''Play the game. Returns the winning player'''
-    #     players = [player1, player2]
-    #     winner = -1
-    #     # add a counter to terminate the game if it is stuck
-    #     count = 0
-    #     while winner < 0 and count < 100:
-    #         self.current_player_idx += 1
-    #         self.current_player_idx %= len(players)
-    #         ok = False
-    #         while not ok:
-    #             from_pos, slide = players[self.current_player_idx].make_move(
-    #                 self)
-    #             ok = self.move(from_pos, slide, self.current_player_idx)
-    #         winner = self.check_winner()
-    #         count += 1
-    #     print(self._board)
-    #     return winner, count
+    def count_longest_seq(self, player_id:int) -> int:
+        '''Count the longest sequence of pieces'''
+        max_consecutive = max(np.max(np.where(self._board == player_id, 1, 0).sum(axis=0)), np.max(np.where(self._board == player_id, 1, 0).sum(axis=1)))
+        princ_diagonal = np.diagonal(self._board)
+        sec_diagonal = np.diagonal(np.fliplr(self._board))
+        total_max = max(max_consecutive, np.max(np.where(princ_diagonal == player_id, 1, 0).sum(axis=0)), np.max(np.where(sec_diagonal == player_id, 1, 0).sum(axis=0)))
+        return total_max
 
     @staticmethod
     def from_game(game: Game) -> 'MyGame':

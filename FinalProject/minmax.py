@@ -13,18 +13,17 @@ class MinMax(Player):
     self.opponent_id = 1 if player_id == 0 else 0
     self.depth = depth
 
-  def evaluate(self, game: 'Game'):
+  def evaluate(self, game: 'MyGame'):
     winner = game.check_winner()
     if winner == self.player_id:
-      return 1
+      return 10
     elif winner == self.opponent_id:
-      return -1
+      return -10
     else:
-      free_tiles = np.count_nonzero(game.get_board() == -1)
-      if free_tiles == 0:
-        return 0
-      else:
-        return -(free_tiles / 25)
+      longest_seq_player = game.count_longest_seq(self.player_id)
+      longest_seq_opponent = game.count_longest_seq(self.opponent_id)
+      return longest_seq_player - longest_seq_opponent
+
 
   def minimax(self, game: 'MyGame', depth: int, alpha: int, beta: int, maximizing_player: bool) -> int:
     if depth == 0 or game.check_winner() != -1:

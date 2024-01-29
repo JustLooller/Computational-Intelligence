@@ -16,23 +16,23 @@ class RandomPlayer(Player):
 
 
 if __name__ == '__main__':
-
+    NUM_GAMES = 100
     wins = 0
-    for _ in tqdm(range(10), desc="MinMax vs Random", unit="game"):
+    for _ in tqdm(range(NUM_GAMES), desc="MinMax vs Random", unit="game"):
         g = Game()
         player1 = MinMax(0, 2)
         player2 = RandomPlayer()
         winner= g.play(player1, player2)
         if winner == 0: wins += 1
     print(f"MinMax player with depth 2 as first player wins: {wins}")
-    print(f"Random player as second player wins: {10 - wins}")
+    print(f"Random player as second player wins: {NUM_GAMES - wins}")
 
     wins = 0
-    for _ in tqdm(range(10), desc="Random vs MinMax", unit="game"):
+    for _ in tqdm(range(NUM_GAMES), desc="Random vs MinMax", unit="game"):
         g = MyGame()
         player1 = RandomPlayer()
         player2 = MinMax(1, 2)
         winner= g.play(player1, player2)
         if winner == 1: wins += 1
     print(f"MinMax player with depth 2 as second player wins: {wins}")
-    print(f"Random player as first player wins: {10 - wins}")
+    print(f"Random player as first player wins: {NUM_GAMES - wins}")
