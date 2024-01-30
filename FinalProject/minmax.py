@@ -25,7 +25,7 @@ class MinMax(Player):
       return longest_seq_player - longest_seq_opponent
 
 
-  def minimax(self, game: 'MyGame', depth: int, alpha: int, beta: int, maximizing_player: bool) -> int:
+  def minimax(self, game: 'Game', depth: int, alpha: int, beta: int, maximizing_player: bool) -> int:
     if depth == 0 or game.check_winner() != -1:
       return self.evaluate(game)
 
